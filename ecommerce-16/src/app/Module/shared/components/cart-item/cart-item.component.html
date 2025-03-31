@@ -1,0 +1,33 @@
+<div class="p-5 shadow-lg">
+    <div class="flex items-center">
+        <div class="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem]">
+            <img src="https://rukminim1.flixcart.com/image/612/612/xif0q/ethnic-set/j/t/a/xl-mk-01-peech-marudhara-original-imagzwze8huxjfgf.jpeg?q=70" alt="product" class="w-full h-full object-cover object-top" />
+        </div>
+        <div class="ml-5 space-y-1">
+            <p class="font-semibold">Mens Solid Cotton Blend Stright Kurta</p>
+            <p class="text-gray-500">Size: M, Black</p>
+            <p class="text-gray-500 mt-2">Seller: KSH Trendz</p>
+
+            <div class="flex space-x-2 items-center pt-3">
+                <p class="text-gray-500 line-through">₹1499</p>
+                <p class="font-semibold text-lg">₹265</p>
+                <p class="font-semibold text-green-600">82%</p>
+            </div>
+        </div>
+    </div>
+    <div class="flex items-center lg:space-x-10 pt-4 justify-between" *ngIf="showButton">
+        <div class="flex items-center space-x-2 justify-between w-full">
+            <div class="example-button-container flex items-center">
+                <button mat-mini-fab color="accent" (click)="updateCartItem(-1)" [disabled]="quantity === 1">
+                    <mat-icon>remove</mat-icon>
+                </button>
+                <span class="px-7 py-1 border-gray-800 rounded-sm">{{quantity}}</span>
+                <button mat-mini-fab color="accent" (click)="updateCartItem(1)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+            <button mat-stroked-button color="accent" (click)="removeCartItem()" class="">Remove</button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,127 @@
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-12 px-5 lg:px-20">
+  <div class="col-span-1 lg:col-span-5">
+    <div
+      class="rounded-md shadow-md h-[32.2rem] overflow-y-auto hide-scrollbar box py-5"
+    >
+      <div class="p-5 py-7 cursor-pointer">
+        <div
+          class="py-2 space-y-2"
+          *ngFor="let item of addresses; let last = last"
+        >
+          <app-address-card [address]="item" />
+          <button
+            class=""
+            style="padding: 1.6rem"
+            mat-raised-button
+            color="accent"
+            (click)="handleCreateOrder(item)"
+          >
+            Deliver to this address
+          </button>
+          <mat-divider *ngIf="!last"></mat-divider>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-1 lg:col-span-7">
+    <div class="rounded-md shadow-md p-5 box">
+      <form action="" [formGroup]="myForm" (ngSubmit)="handleSubmit()">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div class="col-span-1">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Full Name</mat-label>
+              <input
+                matInput
+                formControlName="firstName"
+                autocomplete="given-name"
+                type="text"
+              />
+              <!-- <mat-error *ngIf="myForm.get('name').hasError('required')">
+                            Name is required
+                        </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div class="col-span-1">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                formControlName="lastName"
+                autocomplete="given-name"
+                type="text"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-span-2">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Address</mat-label>
+              <textarea
+                rows="4"
+                matInput
+                formControlName="streetAddress"
+                autocomplete="given-name"
+                type="text"
+              >
+              </textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-span-1">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>City</mat-label>
+              <input
+                rows="4"
+                matInput
+                formControlName="city"
+                autocomplete="given-name"
+                type="text"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-span-1">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>State</mat-label>
+              <input
+                rows="4"
+                matInput
+                formControlName="state"
+                autocomplete="given-name"
+                type="text"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-span-1">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>ZipCode</mat-label>
+              <input
+                rows="4"
+                matInput
+                formControlName="zipCode"
+                autocomplete="given-name"
+                type="text"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-span-1">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Phone Number</mat-label>
+              <input
+                rows="4"
+                matInput
+                formControlName="mobile"
+                autocomplete="given-name"
+                type="text"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-span-2">
+            <button class="w-full" style="padding: 1.6rem;" mat-raised-button color="accent" type="submit">
+              Deliver Here
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
