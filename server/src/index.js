@@ -2,6 +2,15 @@ const express = require('express')
 const cors = require('cors');
 const userRoutes = require('./routes/userRotutes');
 const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
+const adminProductRoutes = require('./routes/adminProductRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const cartItemRoutes = require('./routes/cartItemRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const ratingRoutes = require('./routes/ratingRoutes');
+const adminOrderRoutes = require('./routes/adminOrderRoutes');
+
 require('dotenv').config();
 
 
@@ -22,5 +31,14 @@ app.get("/",(req,res)=>{
 // Routes
 app.use("/api/auth",authRoutes)
 app.use("/api/users",userRoutes)
+app.use("/api/products",productRoutes)
+app.use("/api/admin/products",adminProductRoutes)
+app.use("/api/cart",cartRoutes)
+app.use("/api/cartItem",cartItemRoutes) 
+app.use("/api/orders",orderRoutes)
+app.use("/api/review",reviewRoutes)
+app.use("/api/rating",ratingRoutes)
+app.use("/api/admin/orders",adminOrderRoutes)
+
 
 module.exports=app;

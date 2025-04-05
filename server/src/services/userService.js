@@ -59,6 +59,14 @@ const findUserByEmail = async (email) => {
 const getUserProfileByToken = async (token) => {
   try {    
     const userId = jwtProvider.getUserIdFromToken(token);
+    if(!userId){
+      return res.status(401).json({
+          success:false,
+          msg:"Unauthorized",
+          error:"Invalid token"
+      })
+  }
+
     const user = await User.findById(userId);
     if (!user) {
       throw new Error("user doesn't exists:", email);

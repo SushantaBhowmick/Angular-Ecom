@@ -9,6 +9,7 @@ async function createProduct(prodData) {
         name: prodData.topLevelCategory,
         level: 1,
       });
+      await topLevel.save();
     }
 
     let secondLevel = await Category.findOne({
@@ -17,11 +18,12 @@ async function createProduct(prodData) {
     });
 
     if (!secondLevel) {
-      topLevel = new Category({
+      secondLevel = new Category({
         name: prodData.secondLevelCategory,
         parentCategory: topLevel._id,
         level: 2,
       });
+      await secondLevel.save();
     }
     let thirdLevel = await Category.findOne({
       name: prodData.thirdLevelCategory,
@@ -29,11 +31,12 @@ async function createProduct(prodData) {
     });
 
     if (!thirdLevel) {
-      topLevel = new Category({
+      thirdLevel = new Category({
         name: prodData.thirdLevelCategory,
         parentCategory: secondLevel._id,
         level: 3,
       });
+      await thirdLevel.save();
     }
 
     // category: thirdLevel ? thirdLevel._id : secondLevel ? secondLevel._id : topLevel._id,
@@ -57,6 +60,7 @@ async function createProduct(prodData) {
 
     return await product.save();
   } catch (error) {
+    console.log(error)
     throw new Error(error.message);
   }
 }
@@ -96,8 +100,80 @@ async function findProductById(productId) {
 }
 async function getAllProducts(prodQuery) {
   try {
-   
-    return product;
+    let {
+      category,
+      color,
+      sizes,
+      minPrice,
+      maxPrice,
+      minDiscount,
+      sort,
+      stock,
+      pageNumber,
+      pageSize,
+    } = prodQuery;
+    const query = Product.find().populate("category");
+    if (category) {
+      const existsCategory = await Category.findOne({ name: category });
+      if (!existsCategory) {
+        return { content: [], totalPages: 0, currentPages: 0 };
+      }
+      query.where("category").equals(existsCategory._id);
+    }
+    if (color) {
+      const colorSet = new Set(color.split(",").map((c)=>c.trim().toLowerCase()));
+
+      const colorRegex = colorSet.size >0 ? new RegExp([...colorSet].join("|"),i) : null;
+      query = query.where("color").regex(colorRegex);
+    }
+
+    if (sizes) {
+      const sizeSet = new Set(sizes);
+      query = query.where("sizes.name").in([...sizeSet]);
+    }
+
+    if (minPrice && maxPrice) {
+     query = query.where("discountPrice").gte(minPrice).lte(maxPrice);
+    }
+
+    if (minDiscount) {
+      query = query.where("discountedPercent").gte(minDiscount);
+    }
+    if (stock) {
+      if(stock ==="in_stock"){
+        query = query.where("quantity").gt(0);
+      }
+      else if(stock ==="out_of_stock"){
+        query = query.where("quantity").lte(1);
+      }
+    }
+
+    if(sort) {
+      const sortDirection = sort === "price_high" ? -1 : 1;
+      query = query.sort({discountedPrice: sortDirection});
+    }
+
+    const totalProducts = await Product.countDocuments(query);
+
+    const skip=(pageNumber - 1) * pageSize;
+    query = query.skip(skip).limit(pageSize)
+
+    const products = await query.exec();
+
+    const totalPages = Math.ceil(totalProducts/pageSize)
+
+    return {content: products, totalPages, currentPage: pageNumber};
+
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function createMultipleProducts(products){
+  try {
+    for(let product of products){
+      await createProduct(product)
+    }
   } catch (error) {
     throw new Error(error.message);
   }
@@ -107,4 +183,7 @@ module.exports = {
   createProduct,
   deleteProduct,
   updateProduct,
+  getAllProducts,
+  findProductById,
+  createMultipleProducts,  
 };

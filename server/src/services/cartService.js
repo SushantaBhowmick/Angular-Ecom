@@ -15,34 +15,41 @@ const createCart = async (user) => {
 
 const findUserCart = async (userId) => {
   try {
-    let cart = await Cart.findOne({ user: userId });
+    let cartDoc = await Cart.findOne({ user: userId });
 
-    let cartItems = await CartItem.find({ cart: cart._id }).populate("product");
+    let cartItems = await CartItem.find({ cart: cartDoc._id }).populate("product");
+    let cart = cartDoc.toObject();
     cart.cartItems = cartItems;
-
-    let totalPrice = 0;
+    // console.log("cartItems", cartItems);
+    
+    let totalPrice = 25;
     let totalDiscountedPrice = 0;
     let totalItem = 0;
-
+    
     for (let cartItem of cart.cartItems) {
       totalPrice += cartItem.price;
       totalDiscountedPrice += cartItem.discountedPrice;
       totalItem += cartItem.quantity;
     }
-
+    
     cart.totalPrice = totalPrice;
     cart.totalItem = totalItem;
     cart.discounted = totalPrice - totalDiscountedPrice;
-
+    
+    // console.log("cart", cart);
     return cart;
   } catch (error) {
+    console.log("error", error);
     throw new Error(error.message);
   }
 };
 
-const addToCartItem = async (userId) => {
+const addToCartItem = async (userId,req) => {
   try {
     const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
     const product = await Product.findById(req.productId);
 
     const isPresent = await CartItem.findOne({
@@ -58,18 +65,14 @@ const addToCartItem = async (userId) => {
         quantity: 1,
         userId,
         price: product.price,
-        size: req,
-        size,
+        size: req.size,
         discountedPrice: product.discountedPrice,
       });
 
       const createdCartItem = await cartItems.save();
       cart.cartItems.push(createdCartItem);
       await cart.save();
-      return res.status(200).json({
-        msg: "Item added to cart",
-        cart,
-      });
+      return cart;
     }
   } catch (error) {
     throw new Error(error.message);

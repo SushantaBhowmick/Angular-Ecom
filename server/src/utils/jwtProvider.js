@@ -32,8 +32,12 @@ const generateToken = (userId) => {
 };
 
 const getUserIdFromToken = (token) => {
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  return decodedToken.userId;
+  try {    
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    return decodedToken.userId;
+  } catch (error) {
+    throw new Error("Invalid token",error.message);  
+  }
 };
 
 module.exports = {

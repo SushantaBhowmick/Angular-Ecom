@@ -21,6 +21,7 @@ async function createOrder(user, shippAddress) {
   const orderItems = [];
 
   for (const item of cart.cartItems) {
+    // console.log(item)
     const orderItem = new OrderItem({
       price: item.price,
       product: item.product,
@@ -35,13 +36,13 @@ async function createOrder(user, shippAddress) {
   }
 
   const createdOrder = new Order({
-    user,
+    user:user._id,
     orderItems,
     totalPrice: cart.totalPrice,
     totalDiscountedPrice: cart.totalDiscountedPrice,
-    discounts: cart.discounts,
+    discounts: cart.discounted,
     totalItem: cart.totalItem,
-    shippingAddress: address,
+    shippingAddress: address._id,
   });
 
   const savedOrder = await createdOrder.save();
