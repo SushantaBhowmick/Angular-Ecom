@@ -13,10 +13,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FeaturesModule } from './Module/features/features.module';
 import { SharedModule } from './Module/shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { AuthModule } from './Module/auth/auth.module';
+import { authReducer } from './State/Auth/auth.reducer';
+import { userReducer } from './State/User/userReducer';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,8 +33,11 @@ import { SharedModule } from './Module/shared/shared.module';
     MatButtonModule,
     FeaturesModule,
     SharedModule,
+    AuthModule,
+    HttpClientModule,
+    StoreModule.forRoot({ auth: authReducer, user: userReducer }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

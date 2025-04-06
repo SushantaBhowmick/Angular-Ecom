@@ -1,0 +1,45 @@
+<div class="container flex justify-center items-center">
+  <form action="" [formGroup]="loginForm" (ngSubmit)="submitForm()">
+    <h1>Shop With MyCom</h1>
+    <div class="">
+      <mat-form-field class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required email />
+        <mat-error *ngIf="loginForm.controls['email'].hasError('required')"
+          >Email is required</mat-error
+        >
+        <mat-error *ngIf="loginForm.controls['email'].hasError('email')"
+          >Please enter a valid email address</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" required type="password" />
+        <mat-error *ngIf="loginForm.controls['password'].hasError('required')"
+          >Password is required</mat-error
+        >
+        <mat-error *ngIf="loginForm.controls['password'].hasError('minlength')"
+          >Password must be at least 8 characters long</mat-error
+        >
+        <!-- <mat-error *ngIf="loginForm.controls['password'].hasError('pattern')">Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character</mat-error> -->
+      </mat-form-field>
+
+      <div>
+        <button
+          class="w-full"
+          style="padding: 1.7rem"
+          color="accent"
+          mat-raised-button
+        >
+          LOGIN
+        </button>
+      </div>
+
+      <div class="pt-5">
+        <span class="w-full">If you don't have account?</span>
+        <button mat-button color="accent" (click)="changeTemplate()">Register</button>
+      </div>
+    </div>
+  </form>
+</div>

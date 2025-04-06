@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import { AuthComponent } from 'src/app/Module/auth/auth.component';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +13,7 @@ export class NavbarComponent {
   selectedSection: any;
   category:any;
   
-  constructor(private router:Router) {}
+  constructor(private router:Router, private dialog:MatDialog) {}
 
   ngOnInit(): void {}
 
@@ -28,6 +30,7 @@ export class NavbarComponent {
     this.isNavbarConteneOpen = false;
   }
 
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
    const modelContainer = document.querySelector('.modal-container');
@@ -42,5 +45,13 @@ export class NavbarComponent {
     if(modelContainer && !clickInsideButton && this.isNavbarConteneOpen){
       this.closeNavbar();
     }
+  }
+
+
+  onOpenLoginModal() {
+    this.dialog.open(AuthComponent,{
+      width:'500px',
+      disableClose:false,
+    })
   }
 }
