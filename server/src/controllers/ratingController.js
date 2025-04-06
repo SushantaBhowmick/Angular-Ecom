@@ -3,7 +3,7 @@ const { createRating, getAllProductRatings } = require("../services/ratingServic
 
 
 exports.createRating = async (req, res) => {
-    const user = req.user;
+    const user = await req.user;
 
     try {
         const newRating = await createRating(req.body, user);

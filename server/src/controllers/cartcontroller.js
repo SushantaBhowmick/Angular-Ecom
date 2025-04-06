@@ -2,7 +2,7 @@ const { findUserCart, addToCartItem } = require("../services/cartService");
 
 
 exports.findUserCart=async(req,res)=>{
-    const user = req.user;
+    const user = await req.user;
     try {
         const cart = await findUserCart(user._id)
         return res.status(200).json({
@@ -20,10 +20,9 @@ exports.findUserCart=async(req,res)=>{
 }
 
 exports.addItemToCart=async(req,res)=>{
-    const user = req.user;
+    const user = await req.user;
     try {
         const cartItem = await addToCartItem(user._id,req.body);
-        console.log(cartItem)
         return res.status(200).json({
             success:true,
             msg:"Item added to Cart!",

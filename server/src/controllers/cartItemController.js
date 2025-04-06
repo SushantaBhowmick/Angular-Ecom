@@ -4,7 +4,7 @@ const { updateCartItem, removeCartItem } = require("../services/cartItemService"
 
 
 exports.updateCartItem = async (req, res) => {
-    const user = req.user;
+    const user = await req.user;
     const { id } = req.params;
     try {
 
@@ -25,7 +25,7 @@ exports.updateCartItem = async (req, res) => {
 }
 
 exports.removeCartItem = async (req, res) => {
-    const user = req.user;
+    const user = await req.user;
     const { id } = req.params;
     try {
 

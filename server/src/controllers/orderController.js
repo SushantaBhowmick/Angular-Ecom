@@ -2,7 +2,7 @@ const { createOrder, findOrderById, findUserOrderHistory } = require("../service
 
 
 exports.createOrder=async(req,res)=>{
-    const user = req.user;
+    const user = await req.user;
     try {
         const order = await createOrder(user,req.body);
         return res.status(201).json({
@@ -20,7 +20,7 @@ exports.createOrder=async(req,res)=>{
 }
 
 exports.findOrderById=async(req,res)=>{
-    const user = req.user;
+    const user = await req.user;
     const {id} = req.params;
     try {
         const order = await findOrderById(id);
@@ -38,7 +38,7 @@ exports.findOrderById=async(req,res)=>{
 }
 
 exports.orderHistory=async(req,res)=>{
-    const user = req.user;
+    const user = await req.user;
     try {
         const order = await findUserOrderHistory(user._id);
         return res.status(200).json({

@@ -112,7 +112,7 @@ async function getAllProducts(prodQuery) {
       pageNumber,
       pageSize,
     } = prodQuery;
-    const query = Product.find().populate("category");
+    let query = Product.find().populate("category");
     if (category) {
       const existsCategory = await Category.findOne({ name: category });
       if (!existsCategory) {
@@ -123,7 +123,7 @@ async function getAllProducts(prodQuery) {
     if (color) {
       const colorSet = new Set(color.split(",").map((c)=>c.trim().toLowerCase()));
 
-      const colorRegex = colorSet.size >0 ? new RegExp([...colorSet].join("|"),i) : null;
+      const colorRegex = colorSet.size >0 ? new RegExp([...colorSet].join("|"),"i") : null;
       query = query.where("color").regex(colorRegex);
     }
 
